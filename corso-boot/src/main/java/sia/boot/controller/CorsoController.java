@@ -84,10 +84,10 @@ public class CorsoController {
 	
 	// @PutMapping("/{id}")
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT, produces= {MediaType.APPLICATION_PDF_VALUE})
-	public Corso printCorso(@RequestBody Corso corso, @PathVariable Integer id) throws Exception {
+	public ResponseEntity<Corso> printCorso(@RequestBody Corso corso, @PathVariable Integer id) throws Exception {
 		Corso c = new Corso();
 		c.setTitolo("Mock PDF");
-		return c;
+		return ResponseEntity.ok().body(c);
 	}
 	
 	@PostMapping("/uploadBanner")
