@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EntityScan(basePackages="sia.boot.model")
 @EnableJpaRepositories("sia.boot.repository")
-@ComponentScan(basePackages= { "sia.boot.controller" })
+@ComponentScan(basePackages= { "sia.boot.app",  "sia.boot.service" , "sia.boot.controller" })
 public class Application {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
