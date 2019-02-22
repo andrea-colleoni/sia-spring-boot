@@ -7,12 +7,12 @@ import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Repository;
 
 import sia.bootdatajpa.model.Persona;
 
-@Repository
+@RepositoryRestResource(collectionResourceRel="persone", path="persone")
 public interface PersonaRepository extends PagingAndSortingRepository<Persona, Integer> {
 	
 	@Async

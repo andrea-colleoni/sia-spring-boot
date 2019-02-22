@@ -95,13 +95,11 @@ public class PersonaRepositoryTest {
 		}
 		
 		persone = personaRepository.findByAltezzaInCmBetween(179, 182);
-
 		for(Persona p : persone) {
 			log.info(p);
 		}
 		
 		log.info(personaRepository.getMaxId());
-		
 		persone = personaRepository.queryNativa();
 		for(Persona p : persone) {
 			log.info(p);
@@ -123,10 +121,10 @@ public class PersonaRepositoryTest {
 	@Test
 	public void testAsync() throws InterruptedException, ExecutionException {
 		Future<List<Persona>> persone = personaRepository.findByCognome("Rossi");
+		log.info("prima...");
 		for(Persona p : persone.get()) {
 			log.info(p);
 		}
 		log.info("finito.");
 	}
-
 }
