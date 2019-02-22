@@ -24,3 +24,5 @@ hs_err_pid*
 /corso-boot/.settings
 /corso-boot/.classpath
 /corso-boot/.project
+/boot-data-jpa/.mvn
+/boot-data-multidb/.mvn
