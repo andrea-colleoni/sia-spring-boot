@@ -57,6 +57,8 @@ public class ApplicationUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		for(ApplicationRole r : roles)
+			System.out.println(r.getAuthority());
 		return roles;
 	}
 
