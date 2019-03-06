@@ -33,7 +33,8 @@ public class ImportazioneProdottiTest {
 		try {
 			jobLauncher.run(job, new JobParametersBuilder()
 					.addString("inputResource", "./in/dati.zip")
-					.addString("targetFileName", "dati3.csv")
+					.addString("targetFileName", "dati2.csv")
+					.addLong("timestamp", System.currentTimeMillis())
 					.toJobParameters());
 		} catch (JobExecutionAlreadyRunningException e) {
 			e.printStackTrace();
