@@ -10,6 +10,7 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -22,11 +23,17 @@ public class ImportazioneProdottiTest {
 	
 	@Autowired
 	private Job job;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	@Test
 	public void test() {
+		jdbcTemplate.update("DELETE FROM prodotti");
 		try {
 			jobLauncher.run(job, new JobParametersBuilder()
+					.addString("inputResource", "./in/dati.zip")
+					.addString("targetFileName", "dati3.csv")
 					.toJobParameters());
 		} catch (JobExecutionAlreadyRunningException e) {
 			e.printStackTrace();

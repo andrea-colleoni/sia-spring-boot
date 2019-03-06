@@ -9,20 +9,22 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 public class DecompressionTasklet implements Tasklet {
 	
+	private Resource inputResource;
+	private String targertDir;
+	private String targetFileName;
+
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		Resource inputResource = new ClassPathResource("./in/dati.zip");
 		ZipInputStream zis = new ZipInputStream(inputResource.getInputStream());
 		
-		File targetDir = new File("./out");
+		File targetDir = new File(targertDir);
 		if (!targetDir.exists()) {
 			targetDir.mkdir();
 		}
-		File targetFile = new File(targetDir, "dati.csv");
+		File targetFile = new File(targetDir, targetFileName);
 		while(zis.getNextEntry() != null) {
 			targetFile.createNewFile();
 			FileOutputStream fos = new FileOutputStream(targetFile);
@@ -32,5 +34,17 @@ public class DecompressionTasklet implements Tasklet {
 		}
 		zis.close();
 		return RepeatStatus.FINISHED;
+	}
+
+	public void setInputResource(Resource inputResource) {
+		this.inputResource = inputResource;
+	}
+	
+	public void setTargertDir(String targertDir) {
+		this.targertDir = targertDir;
+	}
+
+	public void setTargetFileName(String targetFileName) {
+		this.targetFileName = targetFileName;
 	}
 }
