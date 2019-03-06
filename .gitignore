@@ -26,3 +26,9 @@ hs_err_pid*
 /corso-boot/.project
 /boot-data-jpa/.mvn
 /boot-data-multidb/.mvn
+/CorsiAPI/.mvn
+/CorsiWebAppREST/.mvn
+/web-security/.mvn
+/sia.jwt/.mvn
+/corso.batch/target
+/corso.batch/.settings

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+	<!-- bean definitions here -->
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="datasource"></constructor-arg>
+	</bean>
+	
+	<bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/sia-batch?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value=""></property>
+	</bean>
+
+	<bean id="reader"
+		class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="resource" value="file:./out/dati.csv"></property>
+		<property name="lineMapper">
+			<bean
+				class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names"
+							value="PRODUCT_ID,NAME,DESCRIPTION,PRICE"></property>
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="corso.batch.etl.ProdottoFieldSetMapper">
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="linesToSkip" value="1"></property>
+	</bean>
+
+	<bean id="writer" class="corso.batch.etl.ProductJdbcItemWriter">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="decompressionTasklet" class="corso.batch.etl.DecompressionTasklet"></bean>
+	
+	<batch:job id="importProdotti">
+		<batch:step id="decompress" next="readWriteProdotti">
+			<batch:tasklet ref="decompressionTasklet">
+			</batch:tasklet>
+		</batch:step>
+		<batch:step id="readWriteProdotti">
+			<batch:tasklet>
+				<batch:chunk reader="reader" writer="writer" commit-interval="100" ></batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+	
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager"></property>
+	</bean>
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository"></property>
+	</bean>
+</beans>
