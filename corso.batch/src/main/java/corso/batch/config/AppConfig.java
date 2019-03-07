@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
@@ -11,11 +12,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
+import corso.batch.run.ScheduleJob;
+
 @Configuration
 @Import(value= { ConfigCommons.class })
+@ComponentScan(basePackageClasses = { ScheduleJob.class })
 public class AppConfig {
 	
-	@Value("/dest-schema.sql")
+	@Value("classpath:/dest-schema.sql")
 	private Resource destSchemaScript;
 	
 	@Bean

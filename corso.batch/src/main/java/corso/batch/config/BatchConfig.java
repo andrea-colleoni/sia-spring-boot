@@ -8,6 +8,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -24,11 +25,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.scheduling.quartz.SimpleThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import corso.batch.etl.DecompressionTasklet;
+import corso.batch.etl.JobListener;
 import corso.batch.etl.ProdottoFieldSetMapper;
 import corso.batch.etl.ProductJdbcItemWriter;
+import corso.batch.etl.ReadWriteListener;
+import corso.batch.etl.ReadWriteSkipListener;
 import corso.batch.model.Prodotto;
 
 @Configuration
@@ -47,20 +52,23 @@ public class BatchConfig {
 	@Autowired
 	private StepBuilderFactory sbf;
 
-	@Bean
-	public JobLauncher jobLauncher() throws Exception {
-		SimpleJobLauncher sjl = new SimpleJobLauncher();
-		sjl.setJobRepository(jobRepository());
-		return sjl;
-	}
+//	@Bean
+//	public JobLauncher jobLauncher() throws Exception {
+//		SimpleJobLauncher sjl = new SimpleJobLauncher();
+//		sjl.setJobRepository(jobRepository());
+////		SimpleThreadPoolTaskExecutor taskExecutor = new SimpleThreadPoolTaskExecutor();
+////		taskExecutor.setThreadCount(10);
+////		sjl.setTaskExecutor(new SimpleAsyncTaskExecutor());
+//		return sjl;
+//	}
 
-	@Bean
-	public JobRepository jobRepository() throws Exception {
-		JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
-		factory.setDataSource(dataSource);
-		factory.setTransactionManager(transactionManager);
-		return factory.getObject();
-	}
+//	@Bean
+//	public JobRepository jobRepository() throws Exception {
+//		JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
+//		factory.setDataSource(dataSource);
+//		factory.setTransactionManager(transactionManager);
+//		return factory.getObject();
+//	}
 	
 	@Bean
 	@StepScope
@@ -90,6 +98,8 @@ public class BatchConfig {
 				.faultTolerant()
 				.skipLimit(2)
 				.skip(FlatFileParseException.class)
+				.listener(new ReadWriteListener())
+				.listener(new ReadWriteSkipListener())
 				.build();
 	}
 	
@@ -123,9 +133,16 @@ public class BatchConfig {
 				.next(readWriteProdotti())
 				.build();
 		
-		return jbf.get("importProdotti")
+		DefaultJobParametersValidator jpv = new DefaultJobParametersValidator();
+		jpv.setRequiredKeys(new String[] { "inputResource", "targetFileName" });
+		jpv.setOptionalKeys(new String[] { "timestamp" });
+		
+		Job j = jbf.get("importProdotti")
+			.listener(new JobListener())
+			.validator(jpv)
 			.start(flow)
 			.end()
-			.build();
+			.build();		
+		return j;
 	}
 }

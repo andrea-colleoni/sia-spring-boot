@@ -21,11 +21,11 @@ public class ConfigCommons {
 	}
 	
 	
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		DataSourceTransactionManager tm = new DataSourceTransactionManager();
-		tm.setDataSource(datasource);
-		return tm;
-	}
+//	@Bean
+//	public PlatformTransactionManager transactionManager() {
+//		DataSourceTransactionManager tm = new DataSourceTransactionManager();
+//		tm.setDataSource(datasource);
+//		return tm;
+//	}
 
 }
