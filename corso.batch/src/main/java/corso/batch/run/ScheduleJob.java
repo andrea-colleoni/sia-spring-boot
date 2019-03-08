@@ -39,6 +39,5 @@ public class ScheduleJob {
 		} catch (JobParametersInvalidException e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 }
