@@ -1,13 +1,5 @@
 package sia.batch.sales.etl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.validation.BindException;
@@ -20,8 +12,8 @@ public class SalesRecordFieldSetMapper implements FieldSetMapper<SalesRecord> {
 	public SalesRecord mapFieldSet(FieldSet fieldSet) throws BindException {
 		SalesRecord sr = new SalesRecord();
 		sr.setOrderID(fieldSet.readLong("orderID"));
-		sr.setOrderDate(fieldSet.readDate("orderDate"));
-		sr.setShipDate(fieldSet.readDate("shipDate"));
+		sr.setOrderDate(fieldSet.readDate("orderDate", "MM/dd/yyyy"));
+		sr.setShipDate(fieldSet.readDate("shipDate", "MM/dd/yyyy"));
 		sr.setRegion(fieldSet.readString("region"));
 		sr.setCountry(fieldSet.readString("country"));
 		sr.setItemType(fieldSet.readString("itemType"));

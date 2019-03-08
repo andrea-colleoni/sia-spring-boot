@@ -1,0 +1,73 @@
+***SET*OGGETTO=COPY
+***SET*VERSIONE=T2PT2S
+***DOC*TITOLO
+      *FLUSSO CERTIFICATI FIRMA DIGITALE
+***DOC*DESCRIZIONE
+      *FLUSSO CERTIFICATI FIRMA DIGITALE
+***DOC*AGGIORNAMENTI
+200219*RILACIO INIZIALE
+***DOC*FINE
+      * +-------------------------------------------------------------+
+      * +  T2SFDCS                                            L.  550 +
+      * +-------------------------------------------------------------+
+       01  T2SFDCS.
+      *                                DA    1 A  550 PER  550
+           03  T2SFDCS-CIST            PIC  9(05).
+      *                                DA    1 A    5 PER    5
+      *                                CODICE ISTITUTO
+      *
+           03  T2SFDCS-CCFD            PIC  9(07).
+      *                                DA    6 A   12 PER    7
+      *                                CODICE CERTIFICATO FIRMA DIGITALE
+      *
+           03  T2SFDCS-CISS            PIC  X(250).
+      *                                DA   13 A  262 PER  250
+      *                                CERTIFICATION AUTHORITY (ISSUER)
+      *
+           03  T2SFDCS-CSNR            PIC  X(128).
+      *                                DA  263 A  390 PER  128
+      *                                SERIAL NUMBER
+      *
+           03  T2SFDCS-ZANA            PIC  X(30).
+      *                                DA  391 A  420 PER   30
+      *                                DESCRIZIONE ANAGRAFICA
+      *
+           03  T2SFDCS-ZIND            PIC  X(30).
+      *                                DA  421 A  450 PER   30
+      *                                DESCRIZIONE INDIRIZZO
+      *
+           03  T2SFDCS-CCAP            PIC  9(05).
+      *                                DA  451 A  455 PER    5
+      *                                CODICE CAP
+      *
+           03  T2SFDCS-ZLOC            PIC  X(30).
+      *                                DA  456 A  485 PER   30
+      *                                DESCRIZIONE LOCALITA'
+      *
+           03  T2SFDCS-CFIS            PIC  X(16).
+      *                                DA  486 A  501 PER   16
+      *                                CODICE FISCALE ENTE
+      *
+           03  T2SFDCS-DSCA            PIC  9(08).
+      *                                DA  502 A  509 PER    8
+      *                                DATA SCADENZA
+      *
+           03  FILLER                  PIC  X(41).
+      *                                DA  510 A  550 PER   41
+      *                                DATO A DISPOSIZIONE
+      *
+      * ---------------------------------------------------------------
+      *     NOME      DA    A  LTH   FORMATO    INT  DEC   CHIAVE  SEQ
+      * ---------------------------------------------------------------
+      *    T2SFDCS     1  550  550   STRUTTURA
+      *    CIST        1    5    5   NUMERICO     5    0
+      *    CCFD        6   12    7   NUMERICO     7    0
+      *    CISS       13  262  250   CARATTERE
+      *    CSNR      263  390  128   CARATTERE
+      *    ZANA      391  420   30   CARATTERE
+      *    ZIND      421  450   30   CARATTERE
+      *    CCAP      451  455    5   NUMERICO     5    0
+      *    ZLOC      456  485   30   CARATTERE
+      *    CFIS      486  501   16   CARATTERE
+      *    DSCA      502  509    8   NUMERICO     8    0
+      *    FILLER    510  550   41   CARATTERE

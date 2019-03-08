@@ -14,13 +14,15 @@ import javax.persistence.TemporalType;
 public class SalesRecord {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	// @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long orderID;
 	
 	@Temporal(TemporalType.DATE)
 	private Date orderDate;
 	@Temporal(TemporalType.DATE)
 	private Date shipDate;
+	
+	private Integer elapsedDays;
 	
 	private String region;
 	private String country;
@@ -126,6 +128,12 @@ public class SalesRecord {
 		return "SalesRecord [itemType=" + itemType + ", salesChannel=" + salesChannel + ", orderDate=" + orderDate
 				+ ", orderID=" + orderID + ", shipDate=" + shipDate + ", unitsSold=" + unitsSold + ", totalRevenue="
 				+ totalRevenue + ", totalCost=" + totalCost + ", totalProfit=" + totalProfit + "]";
+	}
+	public Integer getElapsedDays() {
+		return elapsedDays;
+	}
+	public void setElapsedDays(Integer elapsedDays) {
+		this.elapsedDays = elapsedDays;
 	}
 	
 	
