@@ -39,12 +39,14 @@ public class BatchSalesApplication {
 	
 	// @Scheduled(initialDelay=0, fixedDelay=360000)
 	public void run() {
+		long millis = System.currentTimeMillis();
 		try {
 			jl.run(job, new JobParametersBuilder()
+					.getNextJobParameters(job)
 					// .addString("flatFile", "file:./out/10000 Sales Records.csv")
-//					.addString("zipFile", "file:./in/10000-Sales-Records.zip")
-//					.addString("targetDir", "./out")
-					.addLong("timestamp", System.currentTimeMillis())
+					.addString("zipFile", "file:./in/10000-Sales-Records.zip")
+					.addString("targetDir", "./out")
+					//.addLong("timestamp", System.currentTimeMillis())
 					.toJobParameters());
 		} catch (JobExecutionAlreadyRunningException e) {
 			e.printStackTrace();
@@ -55,5 +57,6 @@ public class BatchSalesApplication {
 		} catch (JobParametersInvalidException e) {
 			e.printStackTrace();
 		}
+		System.out.println(System.currentTimeMillis() - millis);
 	}
 }

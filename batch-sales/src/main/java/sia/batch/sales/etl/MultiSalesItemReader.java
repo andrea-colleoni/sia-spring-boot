@@ -15,7 +15,7 @@ public class MultiSalesItemReader extends MultiResourceItemReader<SalesRecord> {
 		super();
 		Resource[] resources;
 		try {
-			resources = new PathMatchingResourcePatternResolver().getResources("file:" + targetDir + "/*.csv");
+			resources = new PathMatchingResourcePatternResolver().getResources("file:" + targetDir + "/*_*.csv");
 			this.setResources(resources);
 			this.setDelegate(new SalesFlatFileReader());
 		} catch (IOException e) {

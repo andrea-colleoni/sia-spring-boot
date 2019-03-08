@@ -7,7 +7,7 @@ import org.springframework.batch.item.file.transform.Range;
 
 import sia.batch.sales.model.FlussoFirmaDigitale;
 
-public class FlussoFirmaFlatFileReader extends FlatFileItemReader<FlussoFirmaDigitale> {
+public class FlussoFirmaFlatFileReader extends FlatFileItemReader<FlussoFirmaDigitale>  {
 
 	public FlussoFirmaFlatFileReader() {
 		super();
