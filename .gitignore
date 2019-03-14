@@ -32,3 +32,4 @@ hs_err_pid*
 /sia.jwt/.mvn
 /corso.batch/target
 /corso.batch/.settings
+/batch-sales/.mvn
